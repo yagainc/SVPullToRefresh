@@ -252,13 +252,22 @@ static char UIScrollViewPullToRefreshView;
 }
 
 - (void)setScrollViewContentInset:(UIEdgeInsets)contentInset {
+    
+    BOOL pagingWasEnabled = self.scrollView.pagingEnabled;
+    
+    self.scrollView.pagingEnabled = NO;
+    
     [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          self.scrollView.contentInset = contentInset;
                      }
-                     completion:NULL];
+                     completion:^(BOOL finished) {
+                         if(finished && contentInset.top == self.originalTopInset && pagingWasEnabled) {
+                             self.scrollView.pagingEnabled = YES;
+                         }
+                     }];
 }
 
 #pragma mark - Observing
