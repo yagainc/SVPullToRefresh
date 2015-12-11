@@ -44,6 +44,8 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
 @property (nonatomic, assign) BOOL showsDateLabel;
 @property(nonatomic, assign) BOOL isObserving;
 
+@property (nonatomic, assign) BOOL pagingEnabled;
+
 - (void)resetScrollViewContentInset;
 - (void)setScrollViewContentInsetForLoading;
 - (void)setScrollViewContentInset:(UIEdgeInsets)insets;
@@ -68,6 +70,7 @@ static char UIScrollViewPullToRefreshView;
         SVPullToRefreshView *view = [[SVPullToRefreshView alloc] initWithFrame:CGRectMake(0, -SVPullToRefreshViewHeight, self.bounds.size.width, SVPullToRefreshViewHeight)];
         view.pullToRefreshActionHandler = actionHandler;
         view.scrollView = self;
+        view.pagingEnabled = self.pagingEnabled;
         [self addSubview:view];
         
         view.originalTopInset = self.contentInset.top;
@@ -252,9 +255,6 @@ static char UIScrollViewPullToRefreshView;
 }
 
 - (void)setScrollViewContentInset:(UIEdgeInsets)contentInset {
-    
-    BOOL pagingWasEnabled = self.scrollView.pagingEnabled;
-    
     self.scrollView.pagingEnabled = NO;
     
     [UIView animateWithDuration:0.3
@@ -264,7 +264,7 @@ static char UIScrollViewPullToRefreshView;
                          self.scrollView.contentInset = contentInset;
                      }
                      completion:^(BOOL finished) {
-                         if(finished && contentInset.top == self.originalTopInset && pagingWasEnabled) {
+                         if(finished && contentInset.top == self.originalTopInset && self.pagingEnabled) {
                              self.scrollView.pagingEnabled = YES;
                          }
                      }];
