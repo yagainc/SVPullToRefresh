@@ -264,7 +264,7 @@ static char UIScrollViewPullToRefreshView;
                          self.scrollView.contentInset = contentInset;
                      }
                      completion:^(BOOL finished) {
-                         if(finished && contentInset.top == self.originalTopInset && self.pagingEnabled) {
+                         if(finished && self.pagingEnabled) {
                              self.scrollView.pagingEnabled = YES;
                          }
                      }];
