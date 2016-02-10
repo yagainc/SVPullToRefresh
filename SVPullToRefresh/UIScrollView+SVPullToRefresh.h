@@ -35,6 +35,8 @@ typedef NSUInteger SVPullToRefreshState;
 
 @interface SVPullToRefreshView : UIView
 
+@property (nonatomic, readwrite) CGFloat originalTopInset;
+
 @property (nonatomic, strong) UIColor *arrowColor;
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
